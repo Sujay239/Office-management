@@ -12,6 +12,7 @@ const links = [
   { link: "/user/tasks", label: "Tasks" },
   { link: "/user/profile", label: "Profile" },
   { link: "/user/attendes", label: "Attendes" },
+  {link : "/user/chat" , label : "Chat"}
 ];
 
 export function Nav() {

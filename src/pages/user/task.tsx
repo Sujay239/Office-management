@@ -29,26 +29,26 @@ export default function UserTasks() {
   const [openId, setOpenId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-//   const demoTasks = [
-//   {
-//     id: 1,
-//     title: "Prepare Report",
-//     description: "Monthly performance report for operations team",
-//     status: "pending",
-//   },
-//   {
-//     id: 2,
-//     title: "Client Meeting",
-//     description: "Discuss onboarding requirements with new client",
-//     status: "in_progress",
-//   },
-//   {
-//     id: 3,
-//     title: "Code Review",
-//     description: "Review pull requests for frontend refactor",
-//     status: "completed",
-//   },
-// ];
+  const demoTasks = [
+  {
+    id: 1,
+    title: "Prepare Report",
+    description: "Monthly performance report for operations team made a react project for myself as i use in office for tracking emp enggagement",
+    status: "pending",
+  },
+  {
+    id: 2,
+    title: "Client Meeting",
+    description: "Discuss onboarding requirements with new client",
+    status: "in_progress",
+  },
+  {
+    id: 3,
+    title: "Code Review",
+    description: "Review pull requests for frontend refactor",
+    status: "completed",
+  },
+];
 
 
   // Fetch tasks assigned to this user
@@ -107,7 +107,7 @@ export default function UserTasks() {
 
 
   return (
-    <Box maw={1600} className="w-full px-2 sm:px-4">
+    <Box maw={1600} className="w-full lg:px-4">
       <Paper p="xl" radius="lg" shadow="md" withBorder>
         <Group justify="space-between" mb="lg">
           <div>
@@ -148,7 +148,7 @@ export default function UserTasks() {
                   </Table.Thead>
 
                   <Table.Tbody>
-                    {tasks.map((task) => (
+                    {demoTasks.map((task) => (
                       <Table.Tr key={task.id}>
                         <Table.Td>
                           <Text fw={600}>{task.title}</Text>
@@ -225,7 +225,7 @@ export default function UserTasks() {
               </Table.Thead>
 
               <Table.Tbody>
-                {tasks.map((task) => (
+                {demoTasks.map((task) => (
                   <React.Fragment key={task.id}>
                     <Table.Tr>
                       {/* Title cell: truncates on small screens */}
@@ -246,7 +246,7 @@ export default function UserTasks() {
 
                       {/* Update cell */}
                       <Table.Td
-                        className="p-1"
+
                         style={{ padding: "6px", textAlign: "center" }}
                       >
                         <div className="flex items-center justify-start gap-2">
@@ -280,9 +280,9 @@ export default function UserTasks() {
                     </Table.Tr>
 
                     {/* Collapsible details row (spans both columns) */}
-                    <Table.Tr>
-                      <Table.Td colSpan={2} className="p-0">
-                        <div style={{ padding: openId === task.id ? 1 : 0 }}>
+                    <Table.Tr className="w-full">
+                      <Table.Td colSpan={2} className="p-0 w-full">
+                        <div>
                           <div
                             aria-hidden={openId !== task.id}
                             style={{
@@ -291,20 +291,15 @@ export default function UserTasks() {
                               transition: "max-height 220ms ease",
                             }}
                           >
-                            <Paper
-                              p="xs"
-                              radius="md"
-                              withBorder
-                              className="m-2"
-                            >
-                              <Group justify="space-between" align="flex-start">
-                                <div style={{ minWidth: 100 }}>
+
+                              <Group className="flex justify-between items-center flex-col">
+                                <div style={{ minWidth: '100%' }}>
                                   <Text size="xs" fw={600}>
                                     Status
                                   </Text>
                                   <Badge
                                     className="mt-1"
-                                    size="sm"
+                                    size="xs"
                                     radius="sm"
                                     color={
                                       task.status === "pending"
@@ -331,7 +326,7 @@ export default function UserTasks() {
                                   </Text>
                                 </div>
                               </Group>
-                            </Paper>
+
                           </div>
                         </div>
                       </Table.Td>

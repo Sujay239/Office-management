@@ -96,30 +96,120 @@ export default function Dashboard() {
   const systemHealth = 'Good';
 
   const adminStats = [
-    { title: 'Total Users', value: totalUsers, icon: IconUsers, color: 'blue' },
-    { title: 'Active Users', value: activeUsers, icon: IconUserCheck, color: 'teal' },
-    { title: 'Pending Invites', value: pendingInvites, icon: IconUserPlus, color: 'orange' },
-    { title: 'Banned Users', value: bannedUsers, icon: IconUserOff, color: 'red' },
-    { title: 'DB Size', value: dbSize, icon: IconDatabase, color: 'grape' },
-    { title: 'System Health', value: systemHealth, icon: IconSettings, color: 'green' },
+    {
+      title: "Total Users",
+      value: totalUsers,
+      icon: IconUsers,
+      color: "blue",
+      bg: "#c3e3f7",
+    },
+    {
+      title: "Active Users",
+      value: activeUsers,
+      icon: IconUserCheck,
+      color: "teal",
+      bg: "#c3f7c5",
+    },
+    {
+      title: "Pending Invites",
+      value: pendingInvites,
+      icon: IconUserPlus,
+      color: "orange",
+      bg: "#f7eadc",
+    },
+    {
+      title: "Banned Users",
+      value: bannedUsers,
+      icon: IconUserOff,
+      color: "red",
+      bg: "#f7dcdc",
+    },
+    {
+      title: "DB Size",
+      value: dbSize,
+      icon: IconDatabase,
+      color: "grape",
+      bg: "#f4e8fc",
+    },
+    {
+      title: "System Health",
+      value: systemHealth,
+      icon: IconSettings,
+      color: "green",
+      bg: "#cffcfb",
+    },
   ];
 
   const recentUsers = users.slice(-3).reverse();
 
+  //Demo Users Data for development purpose change after development
+  const Allusers = [
+    {
+      name: "Sujay Patil",
+      email: "sujay.patil@example.com",
+      status: "active",
+    },
+    {
+      name: "Ritika Sharma",
+      email: "ritika.sharma@example.com",
+      status: "pending",
+    },
+    {
+      name: "Arjun Verma",
+      email: "arjun.verma@example.com",
+      status: "nothing",
+    },
+    {
+      name: "Neha Kulkarni",
+      email: "neha.kulkarni@example.com",
+      status: "active",
+    },
+    {
+      name: "Rohan Singh",
+      email: "rohan.singh@example.com",
+      status: "pending",
+    },
+    {
+      name: "Anita Desai",
+      email: "anita.desai@example.com",
+      status: "nothing",
+    },
+  ];
+
+
 
   return (
-    <Box py="xl" style={{ maxWidth: '1400px', margin: '0 auto' }}>
-      <Title order={2} mb="lg">Admin Dashboard</Title>
+    <Box py="xl" style={{ maxWidth: "1400px" }} className="mx-4 lg:m-auto">
+      <Title order={2} mb="lg">
+        Admin Dashboard
+      </Title>
       <SimpleGrid cols={{ base: 1, sm: 2, md: 3, lg: 6 }} spacing="lg" mb="xl">
         {adminStats.map((stat) => (
-          <Paper key={stat.title} p="md" radius="md" shadow="sm" style={{ background: 'white' }}>
-            <Group>
-              <ThemeIcon size={40} radius="md" color={stat.color} variant="light">
-                <stat.icon size={20} />
-              </ThemeIcon>
-              <div>
-                <Text size="sm" c="dimmed">{stat.title}</Text>
-                <Text size="xl" fw={700} c={stat.color}>{stat.value}</Text>
+          <Paper
+            key={stat.title}
+            p="xl"
+            radius="md"
+            shadow="sm"
+            style={{ background: `${stat.bg}`, minHeight: 150 }}
+          >
+            <Group className="mt-4">
+              <div className="flex justify-center items-start flex-col gap-2">
+                <ThemeIcon
+                  size={52}
+                  radius="md"
+                  color={stat.color}
+                  variant="light"
+                >
+                  <stat.icon size={26} />
+                </ThemeIcon>
+                <div>
+                  <Text size="md" c="dimmed">
+                    {stat.title}
+                  </Text>
+                  <Text size="2xl" fw={700} c={stat.color}>
+                    {stat.value}
+                  </Text>
+                </div>
               </div>
             </Group>
           </Paper>
@@ -134,30 +224,61 @@ export default function Dashboard() {
                 <IconUsers size={20} />
               </ThemeIcon>
               <Title order={4}>Recent Users</Title>
-              <Button leftSection={<IconUserPlus size={16} />} variant="light" color="blue" radius="xl" size="xs">Invite User</Button>
+              <Button
+                leftSection={<IconUserPlus size={16} />}
+                variant="light"
+                color="blue"
+                radius="xl"
+                size="xs"
+              >
+                Invite User
+              </Button>
             </Group>
             <Table striped highlightOnHover withTableBorder>
               <Table.Thead>
                 <Table.Tr>
-                  <Table.Th>User</Table.Th>
-                  <Table.Th>Email</Table.Th>
-                  <Table.Th>Status</Table.Th>
+                  <Table.Th>
+                    <span className="lg:text-base text-[11px]">User</span>
+                  </Table.Th>
+                  <Table.Th>
+                    <span className="lg:text-base text-[11px]">Email</span>
+                  </Table.Th>
+                  <Table.Th>
+                    <span className="lg:text-base text-[11px]">Status</span>
+                  </Table.Th>
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {recentUsers.map((user) => (
+                {Allusers.map((user) => (
                   <Table.Tr key={user.email}>
                     <Table.Td>
                       <Group>
-                        <Avatar src={user.avatar} color="blue" radius="xl" size={32}>
-                          {user.name.split(' ').map(n => n[0]).join('')}
-                        </Avatar>
-                        <Text>{user.name}</Text>
+                        <Text>
+                          <span className="lg:text-base text-[10px]">
+                            {user.name}
+                          </span>
+                        </Text>
                       </Group>
                     </Table.Td>
-                    <Table.Td>{user.email}</Table.Td>
                     <Table.Td>
-                      <Badge color={user.status === 'Active' ? 'green' : user.status === 'Pending' ? 'orange' : 'red'}>{user.status}</Badge>
+                      <span className="lg:text-base text-[10px]">
+                        {user.email}
+                      </span>
+                    </Table.Td>
+                    <Table.Td>
+                      <Badge
+                        color={
+                          user.status === "active"
+                            ? "green"
+                            : user.status === "pending"
+                            ? "orange"
+                            : "red"
+                        }
+                      >
+                        <span className="lg:text-[9px] text-[5px]">
+                          {user.status}
+                        </span>
+                      </Badge>
                     </Table.Td>
                   </Table.Tr>
                 ))}
@@ -175,9 +296,23 @@ export default function Dashboard() {
             </Group>
             <Stack>
               {notifications.map((notification, idx) => (
-                <Paper key={idx} p="sm" radius="sm" style={{ borderLeft: `4px solid ${notification.priority === 'medium' ? '#ffd700' : '#4dabf7'}`, background: '#f8f9fa' }}>
-                  <Text fw={600} mb={4}>{notification.title}</Text>
-                  <Text size="sm" c="dimmed">{notification.message}</Text>
+                <Paper
+                  key={idx}
+                  p="sm"
+                  radius="sm"
+                  style={{
+                    borderLeft: `4px solid ${
+                      notification.priority === "medium" ? "#ffd700" : "#4dabf7"
+                    }`,
+                    background: "#f8f9fa",
+                  }}
+                >
+                  <Text fw={600} mb={4}>
+                    {notification.title}
+                  </Text>
+                  <Text size="sm" c="dimmed">
+                    {notification.message}
+                  </Text>
                 </Paper>
               ))}
             </Stack>

@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-import ProtectedRoute from "./Components/ProtectedRoute";
+// import ProtectedRoute from "./Components/ProtectedRoute";
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -16,6 +16,7 @@ import UserTasks from "./pages/user/task";
 import Login from "./pages/auth/login";
 import AttendesUser from "./pages/user/Attendes";
 import NotFoundPage from "./pages/NotFound";
+import ChatPanel from "./pages/admin/Chat";
 
 export default function AppRoutes() {
   return (
@@ -26,18 +27,20 @@ export default function AppRoutes() {
 
       {/* Protected User Routes */}
       {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/user" element={<UserLayout />}>                              //optimized for all devices 
-          <Route index element={<Home />} />                                      //optimized for all devices 
-          <Route path="/user/profile" element={<Profile />} />                   //optimized for all devices 
-          <Route path="/user/tasks" element={<UserTasks />} />                  //optimized for all devices 
-          <Route path="/user/attendes" element={<AttendesUser />} />           //optimized for all devices 
+        <Route path="/user" element={<UserLayout />}>                              //optimized for all devices
+          <Route index element={<Home />} />                                      //optimized for all devices
+          <Route path="/user/profile" element={<Profile />} />                   //optimized for all devices
+          <Route path="/user/tasks" element={<UserTasks />} />                  //optimized for all devices
+          <Route path="/user/attendes" element={<AttendesUser />} />           //optimized for all devices
+          <Route path="/user/chat" element={<ChatPanel />} />                 //optimized for all devices
         </Route>
 
         {/* Protected Admin Routes */}
         <Route path="/admin" element={<AdminLayout />}>
-          <Route index element={<Dashboard />} />
+          <Route index element={<Dashboard />} />                         //optimized for all devices
           <Route path="tasks" element={<Tasks />} />
           <Route path="chat" element={<Chat />} />
+          <Route path="chat" element={<Chat />} />                      //optimized for all devices
           <Route path="users" element={<Users />} />
           <Route path="log" element={<Log />} />
           <Route path="settings" element={<OtherSettings />} />

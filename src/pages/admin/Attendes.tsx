@@ -174,56 +174,112 @@ export default function Attendes() {
   return (
     <>
       <Box>
-        <Paper shadow="xs" p="xl" withBorder style={{ height: 'calc(100vh - 40px)' }}>
+        <Paper
+          shadow="xs"
+          p="md"
+          withBorder
+          style={{ height: "calc(100vh - 40px)" }}
+        >
           <Group justify="space-between" mb="lg">
             <Title order={2}>Attendance Tracker</Title>
             <Group>
               <Select
                 placeholder="Search employee..."
                 searchable
-                data={employees.map(e => ({ value: String(e.id), label: e.name }))}
+                data={employees.map((e) => ({
+                  value: String(e.id),
+                  label: e.name,
+                }))}
                 value={selectedEmpId}
                 onChange={setSelectedEmpId}
                 style={{ width: 280 }}
                 disabled={employees.length === 0}
               />
-              <Text fw={700} size="xl" c="blue.7">{selectedEmp ? selectedEmp.name : ''}</Text>
+              <Text fw={700} size="xl" c="blue.7">
+                {selectedEmp ? selectedEmp.name : ""}
+              </Text>
             </Group>
           </Group>
-          <SimpleGrid cols={3} spacing="lg" mb="xl">
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <Group>
-                <IconCheck size={24} color="var(--mantine-color-green-6)" />
-                <div>
-                  <Text size="xs" c="dimmed">Present Days</Text>
-                  <Text fw={700} size="xl">{presentDays}</Text>
-                </div>
-              </Group>
+          <SimpleGrid cols={{ lg: 3, md: 2 }} spacing="lg" mb="xl">
+            <Card
+              shadow="sm"
+              radius="md"
+              withBorder
+              style={{
+                backgroundColor: "#d4ffd4",
+              }}
+            >
+              <div className="p-4">
+                <Group>
+                  <IconCheck size={24} color="var(--mantine-color-green-6)" />
+                  <div>
+                    <Text size="xs" c="dimmed">
+                      Present Days
+                    </Text>
+                    <Text fw={700} size="xl" color='green'>
+                      {presentDays}
+                    </Text>
+                  </div>
+                </Group>
+              </div>
             </Card>
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <Group>
-                <IconX size={24} color="var(--mantine-color-red-6)" />
-                <div>
-                  <Text size="xs" c="dimmed">Absent Days</Text>
-                  <Text fw={700} size="xl">{absentDays}</Text>
-                </div>
-              </Group>
+            <Card
+              shadow="sm"
+              padding="lg"
+              radius="md"
+              withBorder
+              style={{
+                backgroundColor: "#fce6e7",
+              }}
+            >
+              <div className="p-4">
+                <Group>
+                  <IconX size={24} color="var(--mantine-color-red-6)" />
+                  <div>
+                    <Text size="xs" c="dimmed">
+                      Absent Days
+                    </Text>
+                    <Text fw={700} size="xl" color='red'>
+                      {absentDays}
+                    </Text>
+                  </div>
+                </Group>
+              </div>
             </Card>
-            <Card shadow="sm" padding="lg" radius="md" withBorder>
-              <Group>
-                <IconClock size={24} color="var(--mantine-color-yellow-6)" />
-                <div>
-                  <Text size="xs" c="dimmed">Leave Days</Text>
-                  <Text fw={700} size="xl">{leaveDays}</Text>
-                </div>
-              </Group>
+            <Card
+              shadow="sm"
+              padding="lg"
+              radius="md"
+              withBorder
+              style={{
+                backgroundColor: "#f7f0d7",
+              }}
+            >
+              <div className="p-4">
+                <Group>
+                  <IconClock size={24} color="var(--mantine-color-yellow-6)" />
+                  <div>
+                    <Text size="xs" c="dimmed">
+                      Leave Days
+                    </Text>
+                    <Text fw={700} size="xl" color='orange'>
+                      {leaveDays}
+                    </Text>
+                  </div>
+                </Group>
+              </div>
             </Card>
           </SimpleGrid>
-          <Card padding="xl" radius="md" withBorder style={{ display: 'flex', flexDirection: 'column', flex: 1 }}>
+          <Card
+            padding="xl"
+            radius="md"
+            withBorder
+            style={{ display: "flex", flexDirection: "column", flex: 1 }}
+          >
             <Group justify="space-between" mb="md">
-              <Button 
-                variant="light" 
-                color="blue" 
+              <Button
+                variant="light"
+                color="blue"
                 onClick={handlePrev}
                 leftSection={<IconChevronLeft size={18} />}
                 size="lg"
@@ -231,11 +287,14 @@ export default function Attendes() {
                 Previous
               </Button>
               <Text fw={700} size="xl">
-                {new Date(year, month).toLocaleString('default', { month: 'long' })} {year}
+                {new Date(year, month).toLocaleString("default", {
+                  month: "long",
+                })}{" "}
+                {year}
               </Text>
-              <Button 
-                variant="light" 
-                color="blue" 
+              <Button
+                variant="light"
+                color="blue"
                 onClick={handleNext}
                 rightSection={<IconChevronRight size={18} />}
                 size="lg"
@@ -245,7 +304,9 @@ export default function Attendes() {
             </Group>
             <SimpleGrid cols={7} spacing={8} mb={12} style={{ flex: 1 }}>
               {weekdays.map((w) => (
-                <Text key={w} ta="center" c="dimmed" fw={500} size="md">{w}</Text>
+                <Text key={w} ta="center" c="dimmed" fw={500} size="md">
+                  {w}
+                </Text>
               ))}
             </SimpleGrid>
             <SimpleGrid cols={7} spacing={8} style={{ flex: 1 }}>
@@ -255,46 +316,82 @@ export default function Attendes() {
                   month === today.getMonth() &&
                   year === today.getFullYear();
                 // Always use UTC for calendar cell date
-                const dateStr = day ? new Date(Date.UTC(year, month, day)).toISOString().slice(0, 10) : '';
-                const attendanceDay = (day && selectedEmp) ? attendance.find(a => {
-                  const attDateObj = new Date(a.date);
-                  const attDateStr = new Date(Date.UTC(attDateObj.getUTCFullYear(), attDateObj.getUTCMonth(), attDateObj.getUTCDate())).toISOString().slice(0, 10);
-                  return a.user_id === selectedEmp.id && attDateStr === dateStr;
-                }) : null;
-                let bgColor = 'var(--mantine-color-white)';
-                let textColor = 'inherit';
-                let cellContent: React.ReactNode = day || '';
-                let tooltipLabel = attendanceDay ? attendanceDay.status : '';
+                const dateStr = day
+                  ? new Date(Date.UTC(year, month, day))
+                      .toISOString()
+                      .slice(0, 10)
+                  : "";
+                const attendanceDay =
+                  day && selectedEmp
+                    ? attendance.find((a) => {
+                        const attDateObj = new Date(a.date);
+                        const attDateStr = new Date(
+                          Date.UTC(
+                            attDateObj.getUTCFullYear(),
+                            attDateObj.getUTCMonth(),
+                            attDateObj.getUTCDate()
+                          )
+                        )
+                          .toISOString()
+                          .slice(0, 10);
+                        return (
+                          a.user_id === selectedEmp.id && attDateStr === dateStr
+                        );
+                      })
+                    : null;
+                let bgColor = "var(--mantine-color-white)";
+                let textColor = "inherit";
+                let cellContent: React.ReactNode = day || "";
+                let tooltipLabel = attendanceDay ? attendanceDay.status : "";
                 if (isToday) {
-                  bgColor = 'var(--mantine-color-blue-6)';
-                  textColor = 'white';
+                  bgColor = "var(--mantine-color-blue-6)";
+                  textColor = "white";
                 } else if (attendanceDay) {
                   switch (attendanceDay.status) {
-                    case 'Present':
-                      bgColor = 'var(--mantine-color-green-1)';
+                    case "Present":
+                      bgColor = "var(--mantine-color-green-1)";
                       // Show check-in/check-out time in cell
                       cellContent = (
-                        <div style={{textAlign: 'center'}}>
+                        <div style={{ textAlign: "center" }}>
                           <div>{day}</div>
-                          <div style={{fontSize: 12, color: '#228be6'}}>
-                            <span>In: {attendanceDay.check_in_time ? attendanceDay.check_in_time.slice(0,5) : '-'}</span><br/>
-                            <span>Out: {attendanceDay.check_out_time ? attendanceDay.check_out_time.slice(0,5) : '-'}</span>
+                          <div style={{ fontSize: 12, color: "#228be6" }}>
+                            <span>
+                              In:{" "}
+                              {attendanceDay.check_in_time
+                                ? attendanceDay.check_in_time.slice(0, 5)
+                                : "-"}
+                            </span>
+                            <br />
+                            <span>
+                              Out:{" "}
+                              {attendanceDay.check_out_time
+                                ? attendanceDay.check_out_time.slice(0, 5)
+                                : "-"}
+                            </span>
                           </div>
                         </div>
                       );
-                      tooltipLabel = `Present\nIn: ${attendanceDay.check_in_time ? attendanceDay.check_in_time.slice(0,5) : '-'}\nOut: ${attendanceDay.check_out_time ? attendanceDay.check_out_time.slice(0,5) : '-'}`;
+                      tooltipLabel = `Present\nIn: ${
+                        attendanceDay.check_in_time
+                          ? attendanceDay.check_in_time.slice(0, 5)
+                          : "-"
+                      }\nOut: ${
+                        attendanceDay.check_out_time
+                          ? attendanceDay.check_out_time.slice(0, 5)
+                          : "-"
+                      }`;
                       break;
-                    case 'Absent':
-                      bgColor = 'var(--mantine-color-red-1)';
+                    case "Absent":
+                      bgColor = "var(--mantine-color-red-1)";
                       break;
-                    case 'Leave':
-                      bgColor = 'var(--mantine-color-yellow-1)';
+                    case "Leave":
+                      bgColor = "var(--mantine-color-yellow-1)";
                       break;
                   }
                 }
                 return (
-                  <Tooltip 
-                    key={idx} 
+                  <Tooltip
+                    key={idx}
                     label={tooltipLabel}
                     multiline
                     disabled={!attendanceDay}
@@ -303,18 +400,18 @@ export default function Attendes() {
                       p="sm"
                       style={{
                         height: 80,
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
                         background: bgColor,
                         color: textColor,
                         fontWeight: isToday ? 700 : 400,
                         opacity: day ? 1 : 0.3,
-                        cursor: day ? 'pointer' : 'default',
-                        transition: 'transform 0.1s ease',
-                        ':hover': {
-                          transform: day ? 'scale(1.05)' : 'none'
-                        }
+                        cursor: day ? "pointer" : "default",
+                        transition: "transform 0.1s ease",
+                        ":hover": {
+                          transform: day ? "scale(1.05)" : "none",
+                        },
                       }}
                     >
                       {cellContent}
@@ -323,7 +420,12 @@ export default function Attendes() {
                 );
               })}
             </SimpleGrid>
-            <Button variant="outline" color="teal" size="lg" onClick={() => setDrawerOpened(true)}>
+            <Button
+              variant="outline"
+              color="teal"
+              size="lg"
+              onClick={() => setDrawerOpened(true)}
+            >
               Update Attendance
             </Button>
             <Drawer
@@ -338,13 +440,18 @@ export default function Attendes() {
                   <Select
                     label="Day"
                     placeholder="Day"
-                    data={Array.from({length: 31}, (_, i) => ({ value: String(i+1), label: String(i+1) }))}
+                    data={Array.from({ length: 31 }, (_, i) => ({
+                      value: String(i + 1),
+                      label: String(i + 1),
+                    }))}
                     value={selectedDate ? String(selectedDate.getDate()) : null}
-                    onChange={val => {
+                    onChange={(val) => {
                       if (!val) return;
                       const d = Number(val);
                       const m = selectedDate ? selectedDate.getMonth() : month;
-                      const y = selectedDate ? selectedDate.getFullYear() : year;
+                      const y = selectedDate
+                        ? selectedDate.getFullYear()
+                        : year;
                       setSelectedDate(new Date(Date.UTC(y, m, d)));
                     }}
                     required
@@ -352,13 +459,24 @@ export default function Attendes() {
                   <Select
                     label="Month"
                     placeholder="Month"
-                    data={Array.from({length: 12}, (_, i) => ({ value: String(i + 1), label: new Date(0, i).toLocaleString('default', { month: 'long' }) }))}
-                    value={selectedDate ? String(selectedDate.getMonth() + 1) : String(month + 1)}
-                    onChange={val => {
+                    data={Array.from({ length: 12 }, (_, i) => ({
+                      value: String(i + 1),
+                      label: new Date(0, i).toLocaleString("default", {
+                        month: "long",
+                      }),
+                    }))}
+                    value={
+                      selectedDate
+                        ? String(selectedDate.getMonth() + 1)
+                        : String(month + 1)
+                    }
+                    onChange={(val) => {
                       if (!val) return;
                       const d = selectedDate ? selectedDate.getDate() : 1;
                       const m = Number(val) - 1;
-                      const y = selectedDate ? selectedDate.getFullYear() : year;
+                      const y = selectedDate
+                        ? selectedDate.getFullYear()
+                        : year;
                       setSelectedDate(new Date(Date.UTC(y, m, d)));
                     }}
                     required
@@ -366,12 +484,16 @@ export default function Attendes() {
                   <Select
                     label="Year"
                     placeholder="Year"
-                    data={Array.from({length: 5}, (_, i) => {
+                    data={Array.from({ length: 5 }, (_, i) => {
                       const y = year - 2 + i;
                       return { value: String(y), label: String(y) };
                     })}
-                    value={selectedDate ? String(selectedDate.getFullYear()) : String(year)}
-                    onChange={val => {
+                    value={
+                      selectedDate
+                        ? String(selectedDate.getFullYear())
+                        : String(year)
+                    }
+                    onChange={(val) => {
                       if (!val) return;
                       const d = selectedDate ? selectedDate.getDate() : 1;
                       const m = selectedDate ? selectedDate.getMonth() : month;
@@ -383,23 +505,23 @@ export default function Attendes() {
                 </Group>
                 <Group>
                   <Button
-                    color={status === 'Present' ? 'green' : 'gray'}
-                    variant={status === 'Present' ? 'filled' : 'outline'}
-                    onClick={() => setStatus('Present')}
+                    color={status === "Present" ? "green" : "gray"}
+                    variant={status === "Present" ? "filled" : "outline"}
+                    onClick={() => setStatus("Present")}
                   >
                     Present
                   </Button>
                   <Button
-                    color={status === 'Absent' ? 'red' : 'gray'}
-                    variant={status === 'Absent' ? 'filled' : 'outline'}
-                    onClick={() => setStatus('Absent')}
+                    color={status === "Absent" ? "red" : "gray"}
+                    variant={status === "Absent" ? "filled" : "outline"}
+                    onClick={() => setStatus("Absent")}
                   >
                     Absent
                   </Button>
                   <Button
-                    color={status === 'Leave' ? 'yellow' : 'gray'}
-                    variant={status === 'Leave' ? 'filled' : 'outline'}
-                    onClick={() => setStatus('Leave')}
+                    color={status === "Leave" ? "yellow" : "gray"}
+                    variant={status === "Leave" ? "filled" : "outline"}
+                    onClick={() => setStatus("Leave")}
                   >
                     Leave
                   </Button>
@@ -412,19 +534,26 @@ export default function Attendes() {
                     const getCookie = (name: string) => {
                       const value = `; ${document.cookie}`;
                       const parts = value.split(`; ${name}=`);
-                      if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
-                      return '';
+                      if (parts.length === 2)
+                        return parts.pop()?.split(";").shift() || "";
+                      return "";
                     };
-                    const token = getCookie('token');
+                    const token = getCookie("token");
                     const dateStr = formatDateForApi(selectedDate);
-                    console.log('Remove Status Debug:', {
+                    console.log("Remove Status Debug:", {
                       selectedEmpId: selectedEmp.id,
                       dateStr,
                       attendance,
                     });
-                    const existing = attendance.find(a => a.user_id === selectedEmp.id && a.date === dateStr);
+                    const existing = attendance.find(
+                      (a) => a.user_id === selectedEmp.id && a.date === dateStr
+                    );
                     if (!existing) {
-                      console.log('No matching attendance found for:', selectedEmp.id, dateStr);
+                      console.log(
+                        "No matching attendance found for:",
+                        selectedEmp.id,
+                        dateStr
+                      );
                     }
                     const body = {
                       user_id: selectedEmp.id,
@@ -433,21 +562,21 @@ export default function Attendes() {
                     };
                     if (existing) {
                       await fetch(`/api/attendes/${existing.id}`, {
-                        method: 'PUT',
-                        credentials: 'include',
+                        method: "PUT",
+                        credentials: "include",
                         headers: {
-                          'Content-Type': 'application/json',
-                          'Authorization': token ? `Bearer ${token}` : '',
+                          "Content-Type": "application/json",
+                          Authorization: token ? `Bearer ${token}` : "",
                         },
                         body: JSON.stringify(body),
                       });
                     } else {
-                      await fetch('/api/attendes', {
-                        method: 'POST',
-                        credentials: 'include',
+                      await fetch("/api/attendes", {
+                        method: "POST",
+                        credentials: "include",
                         headers: {
-                          'Content-Type': 'application/json',
-                          'Authorization': token ? `Bearer ${token}` : '',
+                          "Content-Type": "application/json",
+                          Authorization: token ? `Bearer ${token}` : "",
                         },
                         body: JSON.stringify(body),
                       });
@@ -458,10 +587,10 @@ export default function Attendes() {
                     setStatus(null);
                     // setLoading(true); (removed)
                     try {
-                      const res = await fetch('/api/attendes', {
-                        credentials: 'include',
+                      const res = await fetch("/api/attendes", {
+                        credentials: "include",
                         headers: {
-                          'Authorization': token ? `Bearer ${token}` : '',
+                          Authorization: token ? `Bearer ${token}` : "",
                         },
                       });
                       if (res.ok) {
@@ -470,7 +599,8 @@ export default function Attendes() {
                           id: a.id,
                           user_id: a.user_id,
                           date: a.date,
-                          status: statusMap[a.status?.toLowerCase()] || 'Present',
+                          status:
+                            statusMap[a.status?.toLowerCase()] || "Present",
                           check_in_time: a.check_in_time,
                           check_out_time: a.check_out_time,
                         }));
@@ -492,20 +622,25 @@ export default function Attendes() {
                     const getCookie = (name: string) => {
                       const value = `; ${document.cookie}`;
                       const parts = value.split(`; ${name}=`);
-                      if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
-                      return '';
+                      if (parts.length === 2)
+                        return parts.pop()?.split(";").shift() || "";
+                      return "";
                     };
-                    const token = getCookie('token');
+                    const token = getCookie("token");
                     const dateStr = formatDateForApi(selectedDate); // YYYY-MM-DD
                     // Find record with exact date match
-                    const existing = attendance.find(a => a.user_id === selectedEmp.id && a.date.slice(0,10) === dateStr);
+                    const existing = attendance.find(
+                      (a) =>
+                        a.user_id === selectedEmp.id &&
+                        a.date.slice(0, 10) === dateStr
+                    );
                     if (existing) {
-                      console.log('Deleting attendance id:', existing.id);
+                      console.log("Deleting attendance id:", existing.id);
                       await fetch(`/api/attendes/${existing.id}`, {
-                        method: 'DELETE',
-                        credentials: 'include',
+                        method: "DELETE",
+                        credentials: "include",
                         headers: {
-                          'Authorization': token ? `Bearer ${token}` : '',
+                          Authorization: token ? `Bearer ${token}` : "",
                         },
                       });
                       // Refresh attendance
@@ -514,10 +649,10 @@ export default function Attendes() {
                       setStatus(null);
                       // setLoading(true); (removed)
                       try {
-                        const res = await fetch('/api/attendes', {
-                          credentials: 'include',
+                        const res = await fetch("/api/attendes", {
+                          credentials: "include",
                           headers: {
-                            'Authorization': token ? `Bearer ${token}` : '',
+                            Authorization: token ? `Bearer ${token}` : "",
                           },
                         });
                         if (res.ok) {
@@ -526,7 +661,8 @@ export default function Attendes() {
                             id: a.id,
                             user_id: a.user_id,
                             date: a.date,
-                            status: statusMap[a.status?.toLowerCase()] || 'Present',
+                            status:
+                              statusMap[a.status?.toLowerCase()] || "Present",
                             check_in_time: a.check_in_time,
                             check_out_time: a.check_out_time,
                           }));
@@ -536,7 +672,9 @@ export default function Attendes() {
                         // setLoading(false); (removed)
                       }
                     } else {
-                      alert('No attendance record found for this date to remove.');
+                      alert(
+                        "No attendance record found for this date to remove."
+                      );
                     }
                   }}
                 >

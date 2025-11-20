@@ -392,56 +392,9 @@ export default function Home() {
                 </Paper>
               ))}
               {tasks.length === 0 && (
-                <div className="flex flex-wrap flex-col gap-2">
                   <Text size="sm" c="dimmed">
                     No recent tasks found.
                   </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
-                </div>
               )}
             </Stack>
           </Paper>

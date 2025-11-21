@@ -1,11 +1,7 @@
 import { Outlet,} from "react-router-dom";
 import { Nav } from "../Components/nav";
-import { useEffect } from "react";
 
 export default function UserLayout() {
-  useEffect(() => {
-    document.title = "Auto Computation - User Dashboard";
-  }, []);
   return (
     <div>
       <nav>

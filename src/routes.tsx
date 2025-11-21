@@ -15,6 +15,7 @@ import Log from "./pages/admin/log";
 import UserTasks from "./pages/user/task";
 import Login from "./pages/auth/login";
 import AttendesUser from "./pages/user/Attendes";
+import NotFoundPage from "./pages/NotFound";
 
 export default function AppRoutes() {
   return (
@@ -25,11 +26,11 @@ export default function AppRoutes() {
 
       {/* Protected User Routes */}
       {/* <Route element={<ProtectedRoute />}> */}
-        <Route path="/user" element={<UserLayout />}>
-          <Route index element={<Home />} />
-          <Route path="/user/profile" element={<Profile />} />
-          <Route path="/user/tasks" element={<UserTasks />} />
-          <Route path="/user/attendes" element={<AttendesUser />} />
+        <Route path="/user" element={<UserLayout />}>                              //optimized for all devices 
+          <Route index element={<Home />} />                                      //optimized for all devices 
+          <Route path="/user/profile" element={<Profile />} />                   //optimized for all devices 
+          <Route path="/user/tasks" element={<UserTasks />} />                  //optimized for all devices 
+          <Route path="/user/attendes" element={<AttendesUser />} />           //optimized for all devices 
         </Route>
 
         {/* Protected Admin Routes */}
@@ -45,7 +46,7 @@ export default function AppRoutes() {
       {/* </Route> */}
 
       {/* Default/Fallback */}
-      <Route path="*" element={<h1>404 - Page Not Found</h1>} />
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }

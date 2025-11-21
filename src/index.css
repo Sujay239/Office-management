@@ -1,1 +1,14 @@
 @import "tailwindcss";
+/* in your global CSS or module */
+.attendance-title {
+  color: #228be6;
+  font-weight: 900;
+  font-size: 22px !important; /* mobile default */
+}
+
+@media (min-width: 768px) { /* md and up */
+  .attendance-title { font-size: 32px !important; }
+}
+@media (min-width: 1024px) { /* lg and up */
+  .attendance-title { font-size: 40px !important; }
+}

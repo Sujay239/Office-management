@@ -51,6 +51,9 @@ export default function Home() {
     avatar?: string;
     join_date?: string;
   };
+  useEffect(() => {
+    document.title = "Auto Computation - User Dashboard";
+  }, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -214,7 +217,7 @@ export default function Home() {
           className="lg:p-[3em] p-[1.5em]"
           radius="md"
           shadow="sm"
-          style={{ background: "#ebeff5" }}
+          style={{ background: "#d2fce7" }}
         >
           <Group>
             <ThemeIcon
@@ -222,7 +225,10 @@ export default function Home() {
               radius="md"
               color="teal"
               variant="light"
-              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
+              style={{
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                border: "3px solid #94f7a2",
+              }}
             >
               <IconUserCheck size={24} />
             </ThemeIcon>
@@ -240,7 +246,7 @@ export default function Home() {
           className="lg:p-[3em] p-[1.5em]"
           radius="md"
           shadow="sm"
-          style={{ background: "#ebeff5" }}
+          style={{ background: "#fce1e1" }}
         >
           <Group>
             <ThemeIcon
@@ -248,7 +254,10 @@ export default function Home() {
               radius="md"
               color="red"
               variant="light"
-              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
+              style={{
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                border: "3px solid #f7a8aa",
+              }}
             >
               <IconUserOff size={24} />
             </ThemeIcon>
@@ -266,7 +275,7 @@ export default function Home() {
           className="lg:p-[3em] p-[1.5em]"
           radius="md"
           shadow="sm"
-          style={{ background: "#ebeff5" }}
+          style={{ background: "#fcece1" }}
         >
           <Group>
             <ThemeIcon
@@ -274,7 +283,10 @@ export default function Home() {
               radius="md"
               color="yellow"
               variant="light"
-              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
+              style={{
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                border: "3px solid #f7bda8",
+              }}
             >
               <IconClock size={24} />
             </ThemeIcon>
@@ -292,7 +304,7 @@ export default function Home() {
           className="lg:p-[3em] p-[1.5em]"
           radius="md"
           shadow="sm"
-          style={{ background: "#ebeff5" }}
+          style={{ background: "#cad7ed" }}
         >
           <Group>
             <ThemeIcon
@@ -300,7 +312,10 @@ export default function Home() {
               radius="md"
               color="blue"
               variant="light"
-              style={{ boxShadow: "0 2px 4px rgba(0,0,0,0.05)" }}
+              style={{
+                boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                border: "3px solid #9abefc",
+              }}
             >
               <IconUserCheck size={24} />
             </ThemeIcon>
@@ -392,9 +407,9 @@ export default function Home() {
                 </Paper>
               ))}
               {tasks.length === 0 && (
-                  <Text size="sm" c="dimmed">
-                    No recent tasks found.
-                  </Text>
+                <Text size="sm" c="dimmed">
+                  No recent tasks found.
+                </Text>
               )}
             </Stack>
           </Paper>

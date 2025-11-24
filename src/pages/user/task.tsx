@@ -29,26 +29,26 @@ export default function UserTasks() {
   const [openId, setOpenId] = useState<number | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const demoTasks = [
-  {
-    id: 1,
-    title: "Prepare Report",
-    description: "Monthly performance report for operations team made a react project for myself as i use in office for tracking emp enggagement",
-    status: "pending",
-  },
-  {
-    id: 2,
-    title: "Client Meeting",
-    description: "Discuss onboarding requirements with new client",
-    status: "in_progress",
-  },
-  {
-    id: 3,
-    title: "Code Review",
-    description: "Review pull requests for frontend refactor",
-    status: "completed",
-  },
-];
+//   const demoTasks = [
+//   {
+//     id: 1,
+//     title: "Prepare Report",
+//     description: "Monthly performance report for operations team made a react project for myself as i use in office for tracking emp enggagement",
+//     status: "pending",
+//   },
+//   {
+//     id: 2,
+//     title: "Client Meeting",
+//     description: "Discuss onboarding requirements with new client",
+//     status: "in_progress",
+//   },
+//   {
+//     id: 3,
+//     title: "Code Review",
+//     description: "Review pull requests for frontend refactor",
+//     status: "completed",
+//   },
+// ];
 
 
   // Fetch tasks assigned to this user
@@ -148,7 +148,7 @@ export default function UserTasks() {
                   </Table.Thead>
 
                   <Table.Tbody>
-                    {demoTasks.map((task) => (
+                    {tasks.map((task) => (
                       <Table.Tr key={task.id}>
                         <Table.Td>
                           <Text fw={600}>{task.title}</Text>
@@ -225,7 +225,7 @@ export default function UserTasks() {
               </Table.Thead>
 
               <Table.Tbody>
-                {demoTasks.map((task) => (
+                {tasks.map((task) => (
                   <React.Fragment key={task.id}>
                     <Table.Tr>
                       {/* Title cell: truncates on small screens */}
@@ -273,7 +273,7 @@ export default function UserTasks() {
                             }
                             type="button"
                           >
-                            {openId === task.id ? "🢁" : "🡻"}
+                            {openId === task.id ? "Hide" : "More"}
                           </button>
                         </div>
                       </Table.Td>

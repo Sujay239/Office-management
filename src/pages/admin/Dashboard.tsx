@@ -11,7 +11,7 @@ import {
   Table,
   Badge,
   Grid,
-  Avatar
+  // Avatar
 } from '@mantine/core';
 import {
   IconUsers,
@@ -143,38 +143,38 @@ export default function Dashboard() {
   const recentUsers = users.slice(-3).reverse();
 
   //Demo Users Data for development purpose change after development
-  const Allusers = [
-    {
-      name: "Sujay Patil",
-      email: "sujay.patil@example.com",
-      status: "active",
-    },
-    {
-      name: "Ritika Sharma",
-      email: "ritika.sharma@example.com",
-      status: "pending",
-    },
-    {
-      name: "Arjun Verma",
-      email: "arjun.verma@example.com",
-      status: "nothing",
-    },
-    {
-      name: "Neha Kulkarni",
-      email: "neha.kulkarni@example.com",
-      status: "active",
-    },
-    {
-      name: "Rohan Singh",
-      email: "rohan.singh@example.com",
-      status: "pending",
-    },
-    {
-      name: "Anita Desai",
-      email: "anita.desai@example.com",
-      status: "nothing",
-    },
-  ];
+  // const Allusers = [
+  //   {
+  //     name: "Sujay Patil",
+  //     email: "sujay.patil@example.com",
+  //     status: "active",
+  //   },
+  //   {
+  //     name: "Ritika Sharma",
+  //     email: "ritika.sharma@example.com",
+  //     status: "pending",
+  //   },
+  //   {
+  //     name: "Arjun Verma",
+  //     email: "arjun.verma@example.com",
+  //     status: "nothing",
+  //   },
+  //   {
+  //     name: "Neha Kulkarni",
+  //     email: "neha.kulkarni@example.com",
+  //     status: "active",
+  //   },
+  //   {
+  //     name: "Rohan Singh",
+  //     email: "rohan.singh@example.com",
+  //     status: "pending",
+  //   },
+  //   {
+  //     name: "Anita Desai",
+  //     email: "anita.desai@example.com",
+  //     status: "nothing",
+  //   },
+  // ];
 
 
 
@@ -249,7 +249,7 @@ export default function Dashboard() {
                 </Table.Tr>
               </Table.Thead>
               <Table.Tbody>
-                {Allusers.map((user) => (
+                {recentUsers.map((user) => (
                   <Table.Tr key={user.email}>
                     <Table.Td>
                       <Group>

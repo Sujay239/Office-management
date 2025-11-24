@@ -1,7 +1,26 @@
-import { Group, Text, Select, Card, Button, SimpleGrid, Paper, Box, Title, Tooltip, Drawer, Stack } from '@mantine/core';
-import { useEffect, useState } from 'react';
+import {
+  Group,
+  Text,
+  Select,
+  Card,
+  Button,
+  SimpleGrid,
+  Paper,
+  Box,
+  Title,
+  Tooltip,
+  Drawer,
+  Stack,
+} from "@mantine/core";
+import { useEffect, useState } from "react";
 // import { DatePicker } from '@mantine/dates';
-import { IconChevronLeft, IconChevronRight, IconCheck, IconX, IconClock } from '@tabler/icons-react';
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconCheck,
+  IconX,
+  IconClock,
+} from "@tabler/icons-react";
 
 // Types
 interface Employee {
@@ -12,7 +31,7 @@ interface Attendance {
   id: number;
   user_id: number;
   date: string;
-    status: 'Present' | 'Absent' | 'Leave' | 'Late';
+  status: "Present" | "Absent" | "Leave" | "Late";
   check_in_time?: string;
   check_out_time?: string;
 }
@@ -20,19 +39,28 @@ interface Attendance {
 // Employees will be fetched from API
 
 // Attendance data from API
-const statusMap: Record<string, 'Present' | 'Absent' | 'Leave' | 'Late'> = {
-  present: 'Present',
-  absent: 'Absent',
-  late: 'Late',
-  leave: 'Leave',
+const statusMap: Record<string, "Present" | "Absent" | "Leave" | "Late"> = {
+  present: "Present",
+  absent: "Absent",
+  late: "Late",
+  leave: "Leave",
 };
 
-const weekdays = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+const weekdays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
-function getMonthAttendance(att: Attendance[], empId: number, year: number, month: number) {
-  return att.filter(a => {
+function getMonthAttendance(
+  att: Attendance[],
+  empId: number,
+  year: number,
+  month: number
+) {
+  return att.filter((a) => {
     const d = new Date(a.date);
-    return a.user_id === empId && d.getUTCFullYear() === year && d.getUTCMonth() === month;
+    return (
+      a.user_id === empId &&
+      d.getUTCFullYear() === year &&
+      d.getUTCMonth() === month
+    );
   });
 }
 
@@ -61,11 +89,17 @@ export default function Attendes() {
   // Helper to format date for API
   function formatDateForApi(date: Date) {
     // Always use UTC to avoid timezone issues
-    return new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())).toISOString().slice(0, 10);
+    return new Date(
+      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
+    )
+      .toISOString()
+      .slice(0, 10);
   }
   const [drawerOpened, setDrawerOpened] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [status, setStatus] = useState<'Absent' | 'Present' | 'Leave' | null>(null);
+  const [status, setStatus] = useState<"Absent" | "Present" | "Leave" | null>(
+    null
+  );
   // Fetch employees from API
   useEffect(() => {
     async function fetchEmployees() {
@@ -73,20 +107,23 @@ export default function Attendes() {
         const getCookie = (name: string) => {
           const value = `; ${document.cookie}`;
           const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
-          return '';
+          if (parts.length === 2) return parts.pop()?.split(";").shift() || "";
+          return "";
         };
-        const token = getCookie('token');
-  const res = await fetch('/api/users', {
-          credentials: 'include',
+        const token = getCookie("token");
+        const res = await fetch("/api/users", {
+          credentials: "include",
           headers: {
-            'Authorization': token ? `Bearer ${token}` : '',
+            Authorization: token ? `Bearer ${token}` : "",
           },
         });
         if (!res.ok) return;
         const data = await res.json();
         // Map API data to Employee type
-        const mapped: Employee[] = data.map((u: any) => ({ id: u.id, name: u.name }));
+        const mapped: Employee[] = data.map((u: any) => ({
+          id: u.id,
+          name: u.name,
+        }));
         setEmployees(mapped);
         if (mapped.length > 0) setSelectedEmpId(String(mapped[0].id));
       } catch {
@@ -98,9 +135,10 @@ export default function Attendes() {
   const [employees, setEmployees] = useState<Employee[]>([]);
   const [attendance, setAttendance] = useState<Attendance[]>([]);
   const [selectedEmpId, setSelectedEmpId] = useState<string | null>(null);
-  const selectedEmp = employees.length > 0 && selectedEmpId
-    ? employees.find((e) => String(e.id) === selectedEmpId) || null
-    : null;
+  const selectedEmp =
+    employees.length > 0 && selectedEmpId
+      ? employees.find((e) => String(e.id) === selectedEmpId) || null
+      : null;
   const today = new Date();
   const [month, setMonth] = useState(today.getMonth());
   const [year, setYear] = useState(today.getFullYear());
@@ -108,20 +146,20 @@ export default function Attendes() {
 
   useEffect(() => {
     async function fetchAttendance() {
-  // setLoading(true); (removed)
+      // setLoading(true); (removed)
       try {
         // Get JWT token from cookies
         const getCookie = (name: string) => {
           const value = `; ${document.cookie}`;
           const parts = value.split(`; ${name}=`);
-          if (parts.length === 2) return parts.pop()?.split(';').shift() || '';
-          return '';
+          if (parts.length === 2) return parts.pop()?.split(";").shift() || "";
+          return "";
         };
-        const token = getCookie('token');
-  const res = await fetch('/api/attendes', {
-          credentials: 'include',
+        const token = getCookie("token");
+        const res = await fetch("/api/attendes", {
+          credentials: "include",
           headers: {
-            'Authorization': token ? `Bearer ${token}` : '',
+            Authorization: token ? `Bearer ${token}` : "",
           },
         });
         if (!res.ok) {
@@ -135,7 +173,7 @@ export default function Attendes() {
           id: a.id,
           user_id: a.user_id,
           date: a.date,
-          status: statusMap[a.status?.toLowerCase()] || 'Present',
+          status: statusMap[a.status?.toLowerCase()] || "Present",
           check_in_time: a.check_in_time,
           check_out_time: a.check_out_time,
         }));
@@ -143,16 +181,20 @@ export default function Attendes() {
       } catch {
         setAttendance([]);
       }
-  // setLoading(false); (removed)
+      // setLoading(false); (removed)
     }
     fetchAttendance();
   }, []);
 
   // Attendance stats for selected employee and month
-  const empAttendance = selectedEmp ? getMonthAttendance(attendance, selectedEmp.id, year, month) : [];
-  const presentDays = empAttendance.filter(a => a.status === 'Present').length;
-  const absentDays = empAttendance.filter(a => a.status === 'Absent').length;
-  const leaveDays = empAttendance.filter(a => a.status === 'Leave').length;
+  const empAttendance = selectedEmp
+    ? getMonthAttendance(attendance, selectedEmp.id, year, month)
+    : [];
+  const presentDays = empAttendance.filter(
+    (a) => a.status === "Present"
+  ).length;
+  const absentDays = empAttendance.filter((a) => a.status === "Absent").length;
+  const leaveDays = empAttendance.filter((a) => a.status === "Leave").length;
 
   const handlePrev = () => {
     if (month === 0) {
@@ -216,7 +258,7 @@ export default function Attendes() {
                     <Text size="xs" c="dimmed">
                       Present Days
                     </Text>
-                    <Text fw={700} size="xl" color='green'>
+                    <Text fw={700} size="xl" color="green">
                       {presentDays}
                     </Text>
                   </div>
@@ -239,7 +281,7 @@ export default function Attendes() {
                     <Text size="xs" c="dimmed">
                       Absent Days
                     </Text>
-                    <Text fw={700} size="xl" color='red'>
+                    <Text fw={700} size="xl" color="red">
                       {absentDays}
                     </Text>
                   </div>
@@ -262,7 +304,7 @@ export default function Attendes() {
                     <Text size="xs" c="dimmed">
                       Leave Days
                     </Text>
-                    <Text fw={700} size="xl" color='orange'>
+                    <Text fw={700} size="xl" color="orange">
                       {leaveDays}
                     </Text>
                   </div>
@@ -282,24 +324,24 @@ export default function Attendes() {
                 color="blue"
                 onClick={handlePrev}
                 leftSection={<IconChevronLeft size={18} />}
-                size="lg"
+                size="sm"
               >
-                Previous
+                <span className="lg:block hidden">Previous</span>
               </Button>
-              <Text fw={700} size="xl">
+              <Text fw={700} size="md">
                 {new Date(year, month).toLocaleString("default", {
                   month: "long",
                 })}{" "}
-                {year}
+                <span className="max-md:text-base">{year}</span>
               </Text>
               <Button
                 variant="light"
                 color="blue"
                 onClick={handleNext}
                 rightSection={<IconChevronRight size={18} />}
-                size="lg"
+                size="sm"
               >
-                Next
+                <span className="lg:block hidden">Next</span>
               </Button>
             </Group>
             <SimpleGrid cols={7} spacing={8} mb={12} style={{ flex: 1 }}>
@@ -425,6 +467,9 @@ export default function Attendes() {
               color="teal"
               size="lg"
               onClick={() => setDrawerOpened(true)}
+              style={{
+                marginTop : '18px'
+              }}
             >
               Update Attendance
             </Button>

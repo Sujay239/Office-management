@@ -151,70 +151,70 @@ export default function Tasks() {
     return search === '' || assigneeName.includes(search.toLowerCase());
   });
 
-  const SAMPLE_TASKS = [
-    {
-      id: 101,
-      title: "Fix Navigation Bug",
-      description:
-        "Mobile menu doesn't close when clicking outside the drawer.",
-      username: "Alice Johnson",
-      status: "In Progress",
-    },
-    {
-      id: 102,
-      title: "Q4 Financial Report",
-      description:
-        "Compile revenue sheets and expense reports for the board meeting.",
-      username: "Robert Fox",
-      status: "Pending",
-    },
-    {
-      id: 103,
-      title: "Update Landing Page",
-      description: "Refresh the hero section images and update the CTA copy.",
-      username: "Cody Fisher",
-      status: "Completed",
-    },
-    {
-      id: 104,
-      title: "Database Migration",
-      description: "Migrate user authentication data to the new schema v2.0.",
-      username: "Esther Howard",
-      status: "Review",
-    },
-    {
-      id: 105,
-      title: "Client Meeting - Tech Corp",
-      description:
-        "Discuss project requirements and timeline for the new dashboard.",
-      username: "Jenny Wilson",
-      status: "In Progress",
-    },
-    {
-      id: 106,
-      title: "Server Maintenance",
-      description:
-        "Routine security patches and OS updates for the production server.",
-      username: "Guy Hawkins",
-      status: "Blocked",
-    },
-    {
-      id: 107,
-      title: "Design System Update",
-      description:
-        "Standardize button components and color palette across the app.",
-      username: "Eleanor Pena",
-      status: "Completed",
-    },
-    {
-      id: 108,
-      title: "Onboard New Intern",
-      description:
-        "Setup email accounts, access permissions, and training modules.",
-      username: "Kristin Watson",
-      status: "Pending",
-    },
-  ];
+  // const SAMPLE_TASKS = [
+  //   {
+  //     id: 101,
+  //     title: "Fix Navigation Bug",
+  //     description:
+  //       "Mobile menu doesn't close when clicking outside the drawer.",
+  //     username: "Alice Johnson",
+  //     status: "In Progress",
+  //   },
+  //   {
+  //     id: 102,
+  //     title: "Q4 Financial Report",
+  //     description:
+  //       "Compile revenue sheets and expense reports for the board meeting.",
+  //     username: "Robert Fox",
+  //     status: "Pending",
+  //   },
+  //   {
+  //     id: 103,
+  //     title: "Update Landing Page",
+  //     description: "Refresh the hero section images and update the CTA copy.",
+  //     username: "Cody Fisher",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     id: 104,
+  //     title: "Database Migration",
+  //     description: "Migrate user authentication data to the new schema v2.0.",
+  //     username: "Esther Howard",
+  //     status: "Review",
+  //   },
+  //   {
+  //     id: 105,
+  //     title: "Client Meeting - Tech Corp",
+  //     description:
+  //       "Discuss project requirements and timeline for the new dashboard.",
+  //     username: "Jenny Wilson",
+  //     status: "In Progress",
+  //   },
+  //   {
+  //     id: 106,
+  //     title: "Server Maintenance",
+  //     description:
+  //       "Routine security patches and OS updates for the production server.",
+  //     username: "Guy Hawkins",
+  //     status: "Blocked",
+  //   },
+  //   {
+  //     id: 107,
+  //     title: "Design System Update",
+  //     description:
+  //       "Standardize button components and color palette across the app.",
+  //     username: "Eleanor Pena",
+  //     status: "Completed",
+  //   },
+  //   {
+  //     id: 108,
+  //     title: "Onboard New Intern",
+  //     description:
+  //       "Setup email accounts, access permissions, and training modules.",
+  //     username: "Kristin Watson",
+  //     status: "Pending",
+  //   },
+  // ];
 
   const [expandedTaskId, setExpandedTaskId] = useState<number | null>(null);
 
@@ -256,7 +256,7 @@ export default function Tasks() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {SAMPLE_TASKS.map((task) => (
+                  {filteredTasks.map((task) => (
                     <Table.Tr key={task.id}>
                       <Table.Td>{task.title}</Table.Td>
                       <Table.Td>{task.description}</Table.Td>
@@ -321,7 +321,7 @@ export default function Tasks() {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {SAMPLE_TASKS.map((task) => {
+                  {filteredTasks.map((task) => {
                     const isExpanded = expandedTaskId === task.id;
 
                     return (

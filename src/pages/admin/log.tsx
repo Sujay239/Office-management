@@ -36,6 +36,100 @@ export default function Log() {
   const [records, setRecords] = useState<AttendesRecord[]>([]);
   const [loading, setLoading] = useState(true);
 
+  // const Sample = [
+  //   {
+  //     id: 1,
+  //     user_id: 101,
+  //     date: "2025-02-14",
+  //     check_in_time: "08:10",
+  //     check_out_time: "16:40",
+  //     status: "completed",
+  //     name: "John Doe",
+  //   },
+  //   {
+  //     id: 2,
+  //     user_id: 102,
+  //     date: "2025-02-14",
+  //     check_in_time: "09:00",
+  //     check_out_time: "17:05",
+  //     status: "completed",
+  //     name: "Sarah Smith",
+  //   },
+  //   {
+  //     id: 3,
+  //     user_id: 103,
+  //     date: "2025-02-14",
+  //     check_in_time: "07:55",
+  //     check_out_time: "15:20",
+  //     status: "completed",
+  //     name: "Michael Johnson",
+  //   },
+  //   {
+  //     id: 4,
+  //     user_id: 104,
+  //     date: "2025-02-14",
+  //     check_in_time: "10:05",
+  //     check_out_time: "18:15",
+  //     status: "completed",
+  //     name: "Emily Davis",
+  //   },
+  //   {
+  //     id: 5,
+  //     user_id: 105,
+  //     date: "2025-02-14",
+  //     check_in_time: "08:35",
+  //     check_out_time: null,
+  //     status: "in-progress",
+  //     name: "David Wilson",
+  //   },
+  //   {
+  //     id: 6,
+  //     user_id: 106,
+  //     date: "2025-02-14",
+  //     check_in_time: "09:20",
+  //     check_out_time: "16:55",
+  //     status: "completed",
+  //     name: "Olivia Martinez",
+  //   },
+  //   {
+  //     id: 7,
+  //     user_id: 107,
+  //     date: "2025-02-14",
+  //     check_in_time: "07:45",
+  //     check_out_time: null,
+  //     status: "in-progress",
+  //     name: "James Anderson",
+  //   },
+  //   {
+  //     id: 8,
+  //     user_id: 108,
+  //     date: "2025-02-14",
+  //     check_in_time: "08:25",
+  //     check_out_time: "17:30",
+  //     status: "completed",
+  //     name: "Sophia Thompson",
+  //   },
+  //   {
+  //     id: 9,
+  //     user_id: 109,
+  //     date: "2025-02-14",
+  //     check_in_time: "09:10",
+  //     check_out_time: "18:00",
+  //     status: "completed",
+  //     name: "Daniel Garcia",
+  //   },
+  //   {
+  //     id: 10,
+  //     user_id: 110,
+  //     date: "2025-02-14",
+  //     check_in_time: "08:50",
+  //     check_out_time: "16:30",
+  //     status: "completed",
+  //     name: "Ava Rodriguez",
+  //   },
+  // ];
+
+
   useEffect(() => {
     async function fetchData() {
       setLoading(true);
@@ -103,9 +197,18 @@ export default function Log() {
     <Paper p="md" radius="md" shadow="sm">
       <Group justify="space-between" mb="md">
         <Title order={3}>Office In/Out Records</Title>
-        <Button variant="light" color="blue" disabled>Add Record</Button>
+        <Button variant="light" color="blue" disabled>
+          Add Record
+        </Button>
       </Group>
-      <Table striped highlightOnHover>
+      <Table
+        striped
+        highlightOnHover
+        style={{
+          borderCollapse: "separate",
+          borderSpacing: "0 8px",
+        }}
+      >
         <Table.Thead>
           <Table.Tr>
             <Table.Th>Employee Name</Table.Th>
@@ -115,12 +218,22 @@ export default function Log() {
         </Table.Thead>
         <Table.Tbody>
           {loading ? (
-            <Table.Tr><Table.Td colSpan={3}>Loading...</Table.Td></Table.Tr>
+            <Table.Tr>
+              <Table.Td colSpan={3}>Loading...</Table.Td>
+            </Table.Tr>
           ) : records.length === 0 ? (
-            <Table.Tr><Table.Td colSpan={3}>No records found</Table.Td></Table.Tr>
+            <Table.Tr>
+              <Table.Td colSpan={3}>No records found</Table.Td>
+            </Table.Tr>
           ) : (
             records.map((rec) => (
-              <Table.Tr key={rec.id}>
+              <Table.Tr
+                key={rec.id}
+                style={{
+                  backgroundColor:
+                    rec.check_out_time === null ? "#b1fcca" : "#fce3e4",
+                }}
+              >
                 <Table.Td>{rec.name}</Table.Td>
                 <Table.Td>{formatTime12h(rec.check_in_time)}</Table.Td>
                 <Table.Td>{formatTime12h(rec.check_out_time)}</Table.Td>

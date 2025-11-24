@@ -106,7 +106,7 @@ export default function Attendes() {
 
   return (
     <Paper
-      className="lg:w-[70%]  xl:h-[85vh] xl:w-[80%] w-full"
+      className="lg:w-[70%]  h-full xl:w-[80%] w-full"
       shadow="xs"
       p="xl"
       withBorder
@@ -210,10 +210,11 @@ export default function Attendes() {
             {/* show text only on md+ */}
           </Button>
           <Text fw={700} size="md">
-            {new Date(year, month).toLocaleString("default", {
+            <span className="max-sm:text-[13px]">{new Date(year, month).toLocaleString("default", {
               month: "long",
             })}{" "}
-            {year}
+            {year}</span>
+
           </Text>
           <Button
             size="xs" // Mantine size helps shrink internal padding

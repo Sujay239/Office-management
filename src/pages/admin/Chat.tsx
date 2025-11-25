@@ -82,10 +82,10 @@ const INITIAL_CONVERSATIONS: Conversation[] = [
 ];
 
 export default function ChatPanel({
-  opened: openedProp,
-  onClose,
+  // opened: openedProp,
+  // onClose,/
   onSend,
-  initialOpen = false,
+  // initialOpen = false,
 }: ChatPanelProps) {
   const isMobile = useMediaQuery("(max-width: 768px)");
 

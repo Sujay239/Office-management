@@ -11,6 +11,7 @@ import {
   TextInput,
   Select,
   Menu,
+  // em,
 } from "@mantine/core";
 import { IconEye, IconEdit, IconTrash, IconDots } from "@tabler/icons-react";
 import { notifySuccess, notifyError } from "../../lib/notify";
@@ -24,6 +25,14 @@ type User = {
   joinDate: string;
   checkInTime?: string;
   checkOutTime?: string;
+};
+type leftUsers = {
+  id: number;
+  name: string;
+  email: string;
+  role: string;
+  joinDate: string;
+  leftDate : string;
 };
 
 const roleOptions = [
@@ -45,19 +54,26 @@ export default function Users() {
   }
   const currentUserRole = getCurrentUserRole();
   const [users, setUsers] = useState<User[]>([]);
+  const [left, setLeftUsers] = useState<leftUsers[]>([]);
   useEffect(() => {
     const fetchUsers = async () => {
       try {
         const token = getTokenCookie();
-        const res = await fetch("/api/users", {
+        const res1 = await fetch("/api/users", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        if (!res.ok) throw new Error("Failed to fetch users");
-        const data = await res.json();
+
+        if (!res1.ok){
+          notifyError("Failed to fetch Active users");
+          return;
+        }
+        const data = await res1.json();
+      const activeUsers = data.filter((u : any) => u.role !== "pastemp");
+      const pastEmployees = data.filter((u : any) => u.role === "pastemp");
         setUsers(
-          data.map((u: any) => ({
+          activeUsers.map((u: any) => ({
             id: u.id,
             name: u.name,
             email: u.email,
@@ -67,7 +83,23 @@ export default function Users() {
             checkOutTime: u.check_out_time || "",
           }))
         );
+
+
+        setLeftUsers(
+          pastEmployees.map((u: any) => ({
+            id: u.id,
+            name: u.name,
+            email: u.email,
+            role: u.role,
+            joinDate: u.join_date || "",
+            leftDate : u.left_date || ""
+          }))
+        );
+
+
       } catch (err) {
+        console.error(err);
+        (err);
         notifyError("Could not load users");
       }
     };
@@ -237,15 +269,45 @@ export default function Users() {
     setDeleteUser(user);
   };
 
-  const confirmDelete = () => {
-    if (!deleteUser) return;
-    setUsers((prev) => prev.filter((u) => u.id !== deleteUser.id));
-    setDeleteUser(null);
-    notifySuccess("User deleted successfully");
-  };
+ const confirmDelete = async () => {
+   if (!deleteUser) return;
+   const token = getTokenCookie();
+   const email = deleteUser.email;
+
+   try {
+     const res = await fetch("/users", {
+       // ← use /api/users
+       method: "DELETE",
+       headers: {
+         "Content-Type": "application/json",
+         Authorization: `Bearer ${token}`,
+       },
+       body: JSON.stringify({ email }), // ← send an object
+     });
+
+     setDeleteUser(null);
+
+     if (!res.ok) {
+       const text = await res.text();
+       console.error("Delete failed:", res.status, text);
+       notifyError("User deletion not completed.");
+       return;
+     }
+
+     notifySuccess("User deleted successfully");
+     // optional: remove from local state so UI updates immediately:
+     setUsers((prev) => prev.filter((u) => u.email !== email));
+   } catch (err) {
+     console.error("Network error deleting user:", err);
+     notifyError("Network error. Could not delete user.");
+   }
+ };
+
+
 
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
+    console.log(addForm);
     if (
       !addForm.name ||
       !addForm.email ||
@@ -267,14 +329,15 @@ export default function Users() {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
+        // name, email, password, role, joinDate, checkInTime, checkOutTime
         body: JSON.stringify({
           name: addForm.name,
           email: addForm.email,
           password: addForm.password,
           role: addForm.role,
-          join_date: addForm.joinDate,
-          check_in_time: addForm.checkInTime,
-          check_out_time: addForm.checkOutTime,
+          joinDate: addForm.joinDate,
+          checkInTime: addForm.checkInTime,
+          checkOutTime: addForm.checkOutTime,
         }),
       });
       if (!res.ok) {
@@ -366,20 +429,40 @@ export default function Users() {
       <Table striped highlightOnHover>
         <Table.Thead>
           <Table.Tr>
-            <Table.Th><span className="max-sm:text-[10px]">Name</span></Table.Th>
-            <Table.Th><span className="max-sm:text-[10px]">Email</span></Table.Th>
-            <Table.Th><span className="max-sm:text-[10px]">Role</span></Table.Th>
-            <Table.Th><span className="max-sm:text-[10px]">Join Date</span></Table.Th>
-            <Table.Th><span className="max-sm:text-[10px]">Action</span></Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Name</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Email</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Role</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Join Date</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Action</span>
+            </Table.Th>
           </Table.Tr>
         </Table.Thead>
         <Table.Tbody>
           {users.map((user) => (
             <Table.Tr key={user.id}>
-              <Table.Td><span className="max-sm:text-[10px]">{user.name}</span></Table.Td>
-              <Table.Td><span className="max-sm:text-[10px]">{user.email}</span></Table.Td>
-              <Table.Td><span className="max-sm:text-[10px]">{user.role}</span></Table.Td>
-              <Table.Td><span className="max-sm:text-[10px] whitespace-nowrap">{user.joinDate}</span></Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px] whitespace-nowrap">{user.name}</span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px]">{user.email}</span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px]">{user.role}</span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px] whitespace-nowrap">
+                  {user.joinDate}
+                </span>
+              </Table.Td>
               <Table.Td>
                 <Group gap="xs">
                   <div className="lg:block hidden">
@@ -442,6 +525,59 @@ export default function Users() {
           ))}
         </Table.Tbody>
       </Table>
+
+
+
+      <div className="mt-20"></div>
+      <Table striped highlightOnHover>
+        <Table.Thead>
+          <Table.Tr>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Name</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Email</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Role</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Join Date</span>
+            </Table.Th>
+            <Table.Th>
+              <span className="max-sm:text-[10px]">Leave Date</span>
+            </Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody>
+          {left.map((user) => (
+            <Table.Tr key={user.id}>
+              <Table.Td>
+                <span className="max-sm:text-[10px] whitespace-nowrap">{user.name}</span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px]">{user.email}</span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px]">{user.role}</span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px] whitespace-nowrap">
+                  {user.joinDate}
+                </span>
+              </Table.Td>
+              <Table.Td>
+                <span className="max-sm:text-[10px] whitespace-nowrap">
+                  {user.leftDate}
+                </span>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+
+
+
       {/* Add User Modal */}
       <Modal
         opened={addModal}

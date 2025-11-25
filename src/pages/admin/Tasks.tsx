@@ -1,23 +1,40 @@
-import { useState, useEffect } from 'react';
-import { Paper, Title, Button, Select, TextInput, Textarea, Group, Stack, Table, Badge, Modal, ActionIcon, Menu, MultiSelect, Loader } from '@mantine/core';
-import { IconTrash, IconEdit, IconDots } from '@tabler/icons-react';
+import { useState, useEffect } from "react";
+import {
+  Paper,
+  Title,
+  Button,
+  Select,
+  TextInput,
+  Textarea,
+  Group,
+  Stack,
+  Table,
+  Badge,
+  Modal,
+  ActionIcon,
+  Menu,
+  MultiSelect,
+  Loader,
+} from "@mantine/core";
+import { IconTrash, IconEdit, IconDots } from "@tabler/icons-react";
 
 import { notifySuccess, notifyError } from "../../lib/notify";
 import { getTokenCookie } from "../../lib/auth";
-import React from 'react';
-
-
+import React from "react";
 
 export default function Tasks() {
   const [tasks, setTasks] = useState<any[]>([]);
   const [users, setUsers] = useState<any[]>([]);
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);
-  const [form, setForm] = useState({ title: '', description: '', assignedTo: [] as string[] });
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    assignedTo: [] as string[],
+  });
   const [editTask, setEditTask] = useState<any>(null);
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
-
 
   // Map userId to userName
   const userIdToName = (id: number | string) => {
@@ -32,10 +49,15 @@ export default function Tasks() {
       try {
         const token = getTokenCookie();
         const [usersRes, tasksRes] = await Promise.all([
-          fetch("/api/users", { headers: { Authorization: `Bearer ${token}` } }),
-          fetch("/api/tasks", { headers: { Authorization: `Bearer ${token}` } }),
+          fetch("/api/users", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
+          fetch("/api/tasks", {
+            headers: { Authorization: `Bearer ${token}` },
+          }),
         ]);
-        if (!usersRes.ok || !tasksRes.ok) throw new Error("Failed to fetch data");
+        if (!usersRes.ok || !tasksRes.ok)
+          throw new Error("Failed to fetch data");
         const usersData = await usersRes.json();
         const tasksData = await tasksRes.json();
         setUsers(usersData);
@@ -65,7 +87,7 @@ export default function Tasks() {
     // For now, only support single assignee (first selected)
     const user_id = form.assignedTo[0];
     try {
-  const res = await fetch("/api/tasks", {
+      const res = await fetch("/api/tasks", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -80,7 +102,7 @@ export default function Tasks() {
       if (!res.ok) throw new Error("Failed to add task");
       const newTask = await res.json();
       setTasks((prev) => [...prev, newTask]);
-      setForm({ title: '', description: '', assignedTo: [] });
+      setForm({ title: "", description: "", assignedTo: [] });
       setModalOpen(false);
       notifySuccess("Task added successfully");
     } catch {
@@ -92,7 +114,7 @@ export default function Tasks() {
   const handleClear = async (id: number) => {
     const token = getTokenCookie();
     try {
-  const res = await fetch(`/api/tasks/${id}`, {
+      const res = await fetch(`/api/tasks/${id}`, {
         method: "DELETE",
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -121,7 +143,7 @@ export default function Tasks() {
     const token = getTokenCookie();
     const user_id = editTask.assignedTo[0];
     try {
-  const res = await fetch(`/api/tasks/${editTask.id}`, {
+      const res = await fetch(`/api/tasks/${editTask.id}`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
@@ -136,7 +158,7 @@ export default function Tasks() {
       });
       if (!res.ok) throw new Error();
       const updated = await res.json();
-      setTasks((prev) => prev.map((t) => t.id === updated.id ? updated : t));
+      setTasks((prev) => prev.map((t) => (t.id === updated.id ? updated : t)));
       notifySuccess("Task updated successfully");
       setEditModalOpen(false);
       setEditTask(null);
@@ -146,9 +168,9 @@ export default function Tasks() {
   };
 
   // Filter tasks by employee name
-  const filteredTasks = tasks.filter(task => {
+  const filteredTasks = tasks.filter((task) => {
     const assigneeName = userIdToName(task.user_id).toLowerCase();
-    return search === '' || assigneeName.includes(search.toLowerCase());
+    return search === "" || assigneeName.includes(search.toLowerCase());
   });
 
   // const SAMPLE_TASKS = [
@@ -222,7 +244,6 @@ export default function Tasks() {
     setExpandedTaskId((prev) => (prev === taskId ? null : taskId));
   };
 
-
   return (
     <Stack gap="xl" className="mx-4 my-4">
       <Title order={2} mb="xs">
@@ -270,8 +291,8 @@ export default function Tasks() {
                             task.status === "pending"
                               ? "orange"
                               : task.status === "in_progress"
-                              ? "blue"
-                              : "green"
+                                ? "blue"
+                                : "green"
                           }
                         >
                           {task.status?.replace("_", " ")}
@@ -312,116 +333,110 @@ export default function Tasks() {
             </Paper>
           </div>
           <div className="lg:hidden block w-full">
+            <Table striped highlightOnHover>
+              <Table.Thead>
+                <Table.Tr>
+                  <Table.Th>Title</Table.Th>
+                  <Table.Th>Action</Table.Th>
+                </Table.Tr>
+              </Table.Thead>
+              <Table.Tbody>
+                {filteredTasks.map((task) => {
+                  const isExpanded = expandedTaskId === task.id;
 
-              <Table striped highlightOnHover>
-                <Table.Thead>
-                  <Table.Tr>
-                    <Table.Th>Title</Table.Th>
-                    <Table.Th>Action</Table.Th>
-                  </Table.Tr>
-                </Table.Thead>
-                <Table.Tbody>
-                  {filteredTasks.map((task) => {
-                    const isExpanded = expandedTaskId === task.id;
+                  return (
+                    <React.Fragment key={task.id}>
+                      <Table.Tr>
+                        <Table.Td>
+                          <span className="lg:text-base text-[12px]">
+                            {task.title}
+                          </span>
+                        </Table.Td>
 
-                    return (
-                      <React.Fragment key={task.id}>
-                        <Table.Tr>
-                          <Table.Td>
-                            <span className="lg:text-base text-[12px]">
-                              {task.title}
-                            </span>
-                          </Table.Td>
+                        <Table.Td>
+                          <Group gap="xs">
+                            {/* Details toggle button */}
 
-                          <Table.Td>
-                            <Group gap="xs">
-                              {/* Details toggle button */}
-
-                              {/* Existing action menu */}
-                              <Menu
-                                shadow="md"
-                                width={160}
-                                position="bottom-end"
-                              >
-                                <Menu.Target>
-                                  <ActionIcon variant="light" color="blue">
-                                    <IconDots size={18} />
-                                  </ActionIcon>
-                                </Menu.Target>
-                                <Menu.Dropdown>
+                            {/* Existing action menu */}
+                            <Menu shadow="md" width={160} position="bottom-end">
+                              <Menu.Target>
+                                <ActionIcon variant="light" color="blue">
+                                  <IconDots size={18} />
+                                </ActionIcon>
+                              </Menu.Target>
+                              <Menu.Dropdown>
+                                <Menu.Item
+                                  leftSection={<IconEdit size={16} />}
+                                  onClick={() => handleEdit(task)}
+                                >
+                                  Edit
+                                </Menu.Item>
+                                {task.status === "completed" && (
                                   <Menu.Item
-                                    leftSection={<IconEdit size={16} />}
-                                    onClick={() => handleEdit(task)}
+                                    leftSection={<IconTrash size={16} />}
+                                    color="red"
+                                    onClick={() => handleClear(task.id)}
                                   >
-                                    Edit
+                                    Clear
                                   </Menu.Item>
-                                  {task.status === "completed" && (
-                                    <Menu.Item
-                                      leftSection={<IconTrash size={16} />}
-                                      color="red"
-                                      onClick={() => handleClear(task.id)}
-                                    >
-                                      Clear
-                                    </Menu.Item>
-                                  )}
-                                </Menu.Dropdown>
-                              </Menu>
-                              <Button
-                                variant="light"
-                                size="xs"
-                                onClick={() => toggleDetails(task.id)}
-                              >
-                                {isExpanded ? "Hide" : "Details"}
-                              </Button>
-                            </Group>
-                          </Table.Td>
-                        </Table.Tr>
+                                )}
+                              </Menu.Dropdown>
+                            </Menu>
+                            <Button
+                              variant="light"
+                              size="xs"
+                              onClick={() => toggleDetails(task.id)}
+                            >
+                              {isExpanded ? "Hide" : "Details"}
+                            </Button>
+                          </Group>
+                        </Table.Td>
+                      </Table.Tr>
 
-                        {/* Expanded details row */}
-                        {isExpanded && (
-                          <Table.Tr>
-                            {/* span both columns so it looks like a full-width div */}
-                            <Table.Td colSpan={2}>
-                              <div className="p-2 border rounded-md text-xs space-y-1">
-                                <div>
-                                  <strong>Status: </strong>
-                                  <Badge
-                                    size="xs"
-                                    radius="sm"
-                                    // optional color logic
-                                    color={
-                                      task.status === "pending"
-                                        ? "orange"
-                                        : task.status === "in_progress"
+                      {/* Expanded details row */}
+                      {isExpanded && (
+                        <Table.Tr>
+                          {/* span both columns so it looks like a full-width div */}
+                          <Table.Td colSpan={2}>
+                            <div className="p-2 border rounded-md text-xs space-y-1">
+                              <div>
+                                <strong>Status: </strong>
+                                <Badge
+                                  size="xs"
+                                  radius="sm"
+                                  // optional color logic
+                                  color={
+                                    task.status === "pending"
+                                      ? "orange"
+                                      : task.status === "in_progress"
                                         ? "blue"
                                         : "green"
-                                    }
-                                  >
-                                    {task.status?.replace("_", " ")}
-                                  </Badge>
-                                </div>
-
-                                <div>
-                                  <strong>Assigned to: </strong>
-                                  {/* use whichever you actually have */}
-                                  {/* {userIdToName(task.user_id)} */}
-                                  {task.username}
-                                </div>
-
-                                <div>
-                                  <strong>Description: </strong>
-                                  <span>{task.description}</span>
-                                </div>
+                                  }
+                                >
+                                  {task.status?.replace("_", " ")}
+                                </Badge>
                               </div>
-                            </Table.Td>
-                          </Table.Tr>
-                        )}
-                      </React.Fragment>
-                    );
-                  })}
-                </Table.Tbody>
-              </Table>
 
+                              <div>
+                                <strong>Assigned to: </strong>
+                                {/* use whichever you actually have */}
+                                {/* {userIdToName(task.user_id)} */}
+                                {task.username}
+                              </div>
+
+                              <div>
+                                <strong>Description: </strong>
+                                <span>{task.description}</span>
+                              </div>
+                            </div>
+                          </Table.Td>
+                        </Table.Tr>
+                      )}
+                    </React.Fragment>
+                  );
+                })}
+              </Table.Tbody>
+            </Table>
           </div>
         </>
       )}

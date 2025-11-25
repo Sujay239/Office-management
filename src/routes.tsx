@@ -1,5 +1,5 @@
 import { Routes, Route } from "react-router-dom";
-// import ProtectedRoute from "./Components/ProtectedRoute";
+import ProtectedRoute from "./Components/ProtectedRoute";
 import UserLayout from "./layouts/UserLayout";
 import AdminLayout from "./layouts/AdminLayout";
 
@@ -26,7 +26,7 @@ export default function AppRoutes() {
       <Route path="/" element={<Login />} /> {/* Optimized for mobile */}
 
       {/* Protected User Routes */}
-      {/* <Route element={<ProtectedRoute />}> */}
+      <Route element={<ProtectedRoute />}>
         <Route path="/user" element={<UserLayout />}>                              //optimized for all devices
           <Route index element={<Home />} />                                      //optimized for all devices
           <Route path="/user/profile" element={<Profile />} />                   //optimized for all devices
@@ -46,7 +46,7 @@ export default function AppRoutes() {
           <Route path="settings" element={<OtherSettings />} />
           <Route path="attendes" element={<AttendesAdmin />} />
         </Route>
-      {/* </Route> */}
+      </Route>
 
       {/* Default/Fallback */}
       <Route path="*" element={<NotFoundPage />} />

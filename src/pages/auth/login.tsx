@@ -114,8 +114,17 @@ export default function Login() {
             style={{ zIndex: 2 }}
             gap="xs"
           >
-            <Title order={1} size={42}>
-              Welcome Back!, 👋
+            <Title
+              order={1}
+              size={42}
+              style={{
+                textDecoration: "underline",
+                background: "linear-gradient(90deg, #fac5c8, #9a91ff)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              Welcome Back!,
             </Title>
             <Text size="lg" maw={450} style={{ lineHeight: 1.6 }}>
               Login to access your workspace and manage your tasks efficiently.
@@ -125,16 +134,21 @@ export default function Login() {
 
         {/* Right side - Login Form */}
         <Box className="w-full xl:w-[30%] " bg="white" p={21}>
-          <Title className="xl:hidden" order={1} size={42}
+          <Title
+            className="xl:hidden"
+            order={1}
             style={{
               fontFamily: '"Times New Roman", Times, serif',
-              textAlign : 'center',
-              paddingTop : '50px',
-              fontSize : '40px',
-              textDecoration : 'underline'
+              textAlign: "center",
+              paddingTop: "50px",
+              fontSize: "40px",
+              textDecoration: "underline",
+              background: "linear-gradient(90deg, red, blue)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
             }}
           >
-            Welcome Back to Office
+            Auto Computation
           </Title>
           <Center h="100%">
             <Stack w="100%" p={40} gap="lg">
